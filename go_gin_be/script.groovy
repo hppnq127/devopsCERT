@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', credentialsId: 'github-login' ,url: 'https://github.com/vulebaolong/devops_04.git'
+                git branch: 'main', credentialsId: 'github-login' ,url: 'https://github.com/hppnq127/devopsCERT.git'
             }
         }
 
@@ -22,13 +22,17 @@ pipeline {
         //         '''
         //     }
         // }
-        
         stage('Deploy Container') {
             steps {
-                // chuyển image qua bên server run docker save | load
+                // Plugin SSH agent
+                
                 sh'''
+                    docker rm go_gin_be -f || true
+                    docker run --name go_gin_be -d -p 8002:8080 go_gin_be_image
                 '''
             }
         }
+        
+        //  
     }
-}
+} 
