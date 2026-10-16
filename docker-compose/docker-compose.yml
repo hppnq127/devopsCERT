@@ -1,0 +1,78 @@
+services:
+  database:
+    image: postgres:18
+    container_name: database
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql
+    environment:
+      - POSTGRES_PASSWORD=12345
+
+    
+  go_gin_be:
+    image: go_gin_be_image
+    container_name: go_gin_be
+    ports:
+      - 8002:8080
+    env_file:
+      - ../go_gin_be/.env
+    depends_on:
+      - database
+
+  java_be:
+    image: java_be_image
+    container_name: java_be
+    ports:
+      - 8003:8080
+    env_file:
+      - ../java_be/.env
+    depends_on:
+      - database
+
+  js_nestjs:
+    image: js_nestjs_image
+    container_name: js_nestjs
+    ports:
+      - 8001:3000
+    env_file:
+      - ../js_nestjs/.env
+    depends_on:
+      - database
+
+  
+  csharp_be:
+    image: csharp_be_image
+    container_name: csharp_be
+    ports:
+      - 8004:8080
+    env_file:
+      - ../csharp_be/.env
+    depends_on:
+      - database
+
+  js_nextjs:
+    image: vulebaolong/my-app-image
+    container_name: js_nextjs
+    ports:
+      - 3001:3000
+
+  html:
+    image: html_image
+    container_name: html
+    ports:
+      - 3002:80
+
+  js_react_vite:
+    image: js_react_vite_image
+    container_name: js_react_vite
+    ports:
+      - 3003:80
+    
+volumes:
+  postgres-data:
+
+
+networks:
+  demo_network:
+    external: true
